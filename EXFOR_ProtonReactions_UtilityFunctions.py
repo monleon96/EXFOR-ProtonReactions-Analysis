@@ -748,33 +748,30 @@ def classify_experiments(experiments, attribute):
 
 def classify_experiments_by_data(experiments):
     """
-    Classifies a list of Experiment objects based on a specified attribute.
+    Classifies a list of Experiment objects based on their column headers after data preparation.
     
-    The function generates individual DataFrames for each unique value of the given attribute
-    and writes these as CSV files. Finally, it returns a dictionary containing all these 
-    DataFrames.
+    The function processes each Experiment object, extracts its dataframe representation using 
+    the `prepare_data` method, and then groups these dataframes by their column headers. 
+    Each grouped dataframe is then saved as a CSV file. Finally, it prints the summary of the 
+    classification process.
 
     Parameters:
     -----------
     experiments : list
         A list of Experiment objects to be classified.
-    attribute : str
-        The attribute based on which the classification is performed.
 
     Returns:
     --------
-    dfs : dict of pd.DataFrame
-        A dictionary with keys as the unique values of the attribute and the corresponding
-        DataFrames as values.
+    None
 
     Example:
     --------
-    classified_dfs = classify_experiments(experiment_list, 'year')
+    classify_experiments_by_data(experiment_list)
 
     Notes:
     ------
-    - The function employs the `get_unique_values` function to identify unique attribute values.
-    - The output DataFrames are written as CSV files in a directory corresponding to the attribute name.
+    - Assumes each Experiment object has a `prepare_data` method that returns a DataFrame.
+    - The output grouped DataFrames are written as CSV files with a specific naming convention.
     """
     # Dictionary to store dataframes grouped by their column headers
     grouped_dataframes = {}
@@ -890,7 +887,6 @@ def plot_experiments(experiments, xlog=False, ylog=False, fig_size=(9,6)):
     if xlog: plt.xscale('log')
     if ylog: plt.yscale('log')
     
-    plt.title("Experiments", fontsize=18, pad=15)
     plt.xlabel(headers[0], fontsize=16, labelpad=10)
     plt.ylabel(headers[1], fontsize=16, labelpad=10)
     plt.xticks(fontsize=14)
@@ -985,7 +981,6 @@ def plot_outliers(outliers_df, experiments, xlog=False, ylog=False, fig_size=(9,
 
         if xlog: plt.xscale('log')
         if ylog: plt.yscale('log')
-        plt.title("Outliers in Experiments", fontsize=18, pad=15)
         plt.xlabel(headers[0], fontsize=16, labelpad=10)
         plt.ylabel(headers[1], fontsize=16, labelpad=10)
         plt.xticks(fontsize=14)
